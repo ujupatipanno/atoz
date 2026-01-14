@@ -1,0 +1,10 @@
+{
+  "id": "atoz",
+  "name": "기능",
+  "version": "2.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "다양한 기능을 추가하는 플러그인",
+  "author": "ujupatipanno",
+  "authorUrl": "https://github.com/ujupatipanno",
+  "isDesktopOnly": false
+}
