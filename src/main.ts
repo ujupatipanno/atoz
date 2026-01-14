@@ -187,16 +187,16 @@ export default class CombinedPlugin extends Plugin {
     private async openOrCreateOrdinaryNote() {
         try {
             let file = this.app.vault.getAbstractFileByPath(ORDINARY_NOTE_PATH);
-            if (!(file instanceof TFile)) file = await this.app.vault.create(ORDINARY_NOTE_PATH, "");
+            if (!(file instanceof TFile)) {
+                file = await this.app.vault.create(ORDINARY_NOTE_PATH, "");
+            }
             const leaf = this.app.workspace.getLeaf(false);
             await leaf.openFile(file as TFile);
-            const view = leaf.view as MarkdownView;
-            const { editor } = view;
-            const now = new Date();
-            const todayHeader = `### ${now.getMonth() + 1}월 ${now.getDate()}일 (${now.toLocaleDateString("ko-KR", { weekday: "short" })})`;
+            const editor = (leaf.view as MarkdownView).editor;
+            const todayHeader = `### ${moment().format("MM월 DD일 (ddd)")}`;
             const content = editor.getValue();
             if (!content.includes(todayHeader)) {
-                const separator = content.length > 0 ? "\n\n" : "";
+                const separator = content.length > 0 ? "\n" : "";
                 editor.replaceRange(`${separator}${todayHeader}\n`, { line: editor.lineCount(), ch: 0 });
             }
             const lastLine = editor.lineCount() - 1;
