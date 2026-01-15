@@ -117,9 +117,35 @@ export default class CombinedPlugin extends Plugin {
                 });
             },
         });
+        this.addCommand({
+            id: 'move-cursor-to-end',
+            name: '커서와 포커스를 문서 끝으로 이동',
+            icon: "lucide-text-cursor",
+            editorCallback: (editor: Editor) => this.moveCursorToEnd(editor)
+        });
+        this.addCommand({
+            id: 'move-cursor-to-start',
+            name: '커서와 포커스를 문서 처음으로 이동',
+            icon: "lucide-arrow-up-to-line",
+            editorCallback: (editor: Editor) => this.moveCursorToStart(editor)
+        });
     }
     onunload() {
         document.body.classList.remove('is-focus-mode');
+    }
+    private moveCursorToEnd(editor: Editor) {
+        editor.focus();
+        const line = editor.lineCount() - 1;
+        const ch = editor.getLine(line).length;
+        const lastPos: EditorPosition = { line, ch };
+        editor.setCursor(lastPos);
+        editor.scrollIntoView({ from: lastPos, to: lastPos }, true);
+    }
+    private moveCursorToStart(editor: Editor) {
+        editor.focus();
+        const firstPos: EditorPosition = { line: 0, ch: 0 };
+        editor.setCursor(firstPos);
+        editor.scrollIntoView({ from: firstPos, to: firstPos }, true);
     }
     private async copyAll(editor: Editor) {
         await navigator.clipboard.writeText(editor.getValue());
