@@ -99,7 +99,6 @@ export default class CombinedPlugin extends Plugin {
                 });
             }
         });
-        this.addCommand({ id: 'scroll-to-bottom', name: '문서 맨 아래로 스크롤', editorCallback: (editor: Editor) => this.scrollToBottom(editor) });
         this.addCommand({ id: 'expand-selection-char-right', name: '선택 영역 한 글자 오른쪽으로 확장', editorCallback: (editor: Editor) => this.expandChar(editor, 1) });
         this.addCommand({ id: 'expand-selection-char-left', name: '선택 영역 한 글자 왼쪽으로 확장', editorCallback: (editor: Editor) => this.expandChar(editor, -1) });
         this.addCommand({ id: 'expand-selection-word-right', name: '선택 영역 단어 단위 오른쪽으로 확장', editorCallback: (editor: Editor) => this.expandWord(editor, 'right') });
@@ -255,11 +254,6 @@ export default class CombinedPlugin extends Plugin {
                 new Notice(`패널이 ${oppositeSide === 'left' ? '왼쪽' : '오른쪽'}으로 이동되었습니다.`);
             });
         }
-    }
-    private scrollToBottom(editor: Editor) {
-        const lastLine = editor.lineCount() - 1;
-        const lastChar = editor.getLine(lastLine).length;
-        editor.scrollIntoView({ from: { line: lastLine, ch: lastChar }, to: { line: lastLine, ch: lastChar } }, true);
     }
     private updateSelections(editor: Editor, getNewHead: (sel: EditorSelection) => EditorPosition) {
         const selections: EditorSelection[] = editor.listSelections().map(sel => ({ anchor: sel.anchor, head: getNewHead(sel) }));
